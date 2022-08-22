@@ -1,46 +1,25 @@
-<template>
-    <div>
-        <div>
-            <h1>식물거래 글쓰기</h1>
-        </div>
-        <div>
-            <form>
-                <div :class="{'photo_list': true, 'x_scroll': true}">
-                    <button :class="{'photo_add': true}" type="button">
-                        사진
-                        +
-                    </button>
-                </div>
-                <div>글 제목 : 
-                    <input type="text" v-model="title">
-                </div>
-                <div>카네고리 선택
-                    <select v-model="category">
-                        <option value="">-</option>
-                    </select>
-                </div>
-                <div>가격 : 
-                    <input type="number" v-model="price" >
-                    네고받기<input type="checkbox" value="nego" v-model="negoYN">
-                </div>
-                <div>
-                    <div>게시글 내용</div>
-                    <div> 
-                        <textarea cols="30" rows="10" v-model="content"></textarea>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</template>
 <script>
+
+import { ref } from 'vue'
+
 export default {
+    
+    setup () {
+        return {
+            text: ref(''),
+            model: ref(null),
+            options: [
+                '카테고리1', '카테고리2', '카테고리3', '카테고리4'
+            ]
+        }
+
+    },
     name: '',
     components: {},
     data() {
         return {
             title: '',
-            categoy: '',
+            category: '',
             price: 0,
             content: '',
             negoYN: ''
@@ -56,7 +35,50 @@ export default {
     unmounted() {},
     methods: {}
 }
+
 </script>
+<template>
+    <div class="q-pa-md">
+        <div class="text-h4">
+            🌱 식물거래 글쓰기
+        </div>
+        <q-separator style="margin-bottom: 5px;" />
+        <div class="q-gutter-md" >
+            <form>      
+                <div>
+                    <q-input v-model="title" label="글제목" />
+                </div>
+                <div>
+                <q-select v-model="category" :options="options" label="카네고리 선택" />
+                </div>
+                <div>
+                    <q-input v-model.number="price" type="number" style=""  label="가격"/>
+                    <q-checkbox left-label label="네고받기" type="checkbox" value="nego" v-model="negoYN" />
+                </div>
+                
+                <q-file bottom-slots v-model="photos" label="사진 첨부" counter max-files="10">
+                    <template v-slot:before>
+                        <q-icon name="folder_open" />
+                    </template>
+
+                    <template v-slot:hint>
+                        첨부할 사진 선택
+                    </template>
+
+                    <template v-slot:append>
+                        <q-btn round dense flat icon="add" @click.stop.prevent />
+                    </template>
+                </q-file>
+                <div>
+                    <div> 
+                        <q-input type="textarea" v-model="content" label="내용" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+</template>
 <style scoped>
 .photo_list{
     height: 150px;
